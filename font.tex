@@ -1,0 +1,37 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Various font settings for pgfplots          %
+% graphics.                                   %
+%                                             %
+% author:  Enys Mones                         %
+% date:    2016-12-07                         %
+% version: 0.1                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%
+% Imports %
+%%%%%%%%%%%
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{fontspec}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font selecting commands %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sets Avenir Next Ultra Light
+\newcommand{\fontthin}{
+	\setsansfont{Avenir Next Ultra Light}
+}
+
+% Sets Avenir Light
+\newcommand{\fontbold}{
+	\setsansfont{Avenir Light}
+}
+
+% Turns off Avenir (sets Source Sans Pro)
+\newcommand{\fontoff}{
+	\setsansfont{Source Sans Pro Light}
+}
+
+% Set thin as default
+\fontthin

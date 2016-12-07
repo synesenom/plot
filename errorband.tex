@@ -1,0 +1,46 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Error bands for pgfplots graphics.          %
+%                                             %
+% author:  Enys Mones                         %
+% date:    2016-12-07                         %
+% version: 0.1                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Imports
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+
+% Creates an asymmetric error band
+%
+% arg 1: additional style (color, opacity)
+% arg 2: data file
+% arg 3: x index
+% arg 4: x index
+% arg 5: lower error bound
+% arg 6: upper error bound
+\newcommand{\ErrorBand}[6][]{
+\pgfplotstableread[skip first n=1]{#2}{\datatable}
+  \addplot[forget plot, draw=none, stack plots=y] table[x index={#3}, y expr=\thisrowno{#5}] {\datatable};
+
+  \addplot[forget plot, draw=none, fill=gray!40, stack plots=y, #1] table[x index={#3}, y expr=\thisrowno{#6}-\thisrowno{#5}] {\datatable} \closedcycle;
+
+  \addplot[forget plot, draw=none, stack plots=y] table [x index={#3}, y expr=-\thisrow{#6}] {\datatable};
+}
+
+% Creates a symmetric error band
+%
+% arg 1: additional style (color, opacity)
+% arg 2: data file
+% arg 3: x index
+% arg 4: x index
+% arg 5: error size
+\newcommand{\ErrorBandSym}[5][]{
+\pgfplotstableread[skip first n=1]{#2}{\datatable}
+  \addplot[forget plot, draw=none, stack plots=y] table[x index={#3}, y expr=\thisrowno{#4}-\thisrowno{#5}] {\datatable};
+
+  \addplot[forget plot, draw=none, fill=gray!40, stack plots=y, #1] table[x index={#3}, y expr=2*\thisrowno{#5}] {\datatable} \closedcycle;
+
+  \addplot[forget plot, draw=none, stack plots=y] table [x index={#3}, y expr=-\thisrow{#5}-\thisrowno{#4}] {\datatable};
+}

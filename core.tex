@@ -1,0 +1,84 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defines general pgfplots style.             %
+% Sets some legend options and defines some   %
+% basic plot types.                           %
+%                                             %
+% author:  Enys Mones                         %
+% date:    2016-12-07                         %
+% version: 0.1                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Imports
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[eulergreek]{sansmath}
+\usepackage[active,tightpage]{preview}
+\usetikzlibrary{calc}
+\usetikzlibrary{pgfplots.groupplots}
+\setlength\PreviewBorder{10pt}
+\pgfplotsset{compat=1.10}
+
+
+% Default font
+\usepackage[light]{sourcesanspro}
+\tikzstyle{every node}=[font=\sffamily\sansmath]
+\pgfplotsset{
+  tick label style = {font=\sffamily},
+  every axis label = {font=\sffamily},
+  legend style = {font=\sffamily},
+  label style = {font=\sffamily}
+}
+
+
+% Legend settings
+\pgfplotsset{
+  % legend
+  legend cell align=left,
+  legend style={draw=none,fill=none},
+  keytopleft/.style={legend pos=north west},
+  keytopright/.style={legend pos=north east},
+  keybottomleft/.style={legend pos=south west},
+  keybottomright/.style={legend pos=south east}
+}
+
+
+% Labels
+\pgfplotsset{
+  xlabel style={yshift=0.1cm},
+  ylabel style={yshift=-0.1cm}
+}
+
+
+% Mark types
+\pgfplotsset{
+  cir/.style={mark=*,mark size=2.4pt},
+  squ/.style={mark=square*,mark size=2.3pt},
+  tri/.style={mark=triangle*,mark size=2.8pt},
+  dia/.style={mark=diamond*,mark size=3pt},
+  pen/.style={mark=pentagon*,mark size=2.8pt},
+  ast/.style={mark=asterisk,mark size=3pt}
+}
+
+% Point plot
+\pgfplotsset{
+  P1/.style={cir,color=red,only marks},
+  P2/.style={squ,color=orange,only marks},
+  P3/.style={tri,color=yellow,only marks},
+  P4/.style={dia,color=green,only marks},
+  P5/.style={pen,color=blue,only marks},
+  P6/.style={ast,color=purple,only marks}
+}
+
+% Line-point plot
+\pgfplotsset{
+  LP1/.style={cir,color=red,thick},
+  LP2/.style={squ,color=orange,thick},
+  LP3/.style={tri,color=yellow,thick},
+  LP4/.style={dia,color=green,thick},
+  LP5/.style={pen,color=blue,thick},
+  LP6/.style={ast,color=purple,thick},
+  LP7/.style={tri,color=gray,thick}
+}
+

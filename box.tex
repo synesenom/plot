@@ -1,0 +1,131 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is an implementation of box plots for  %
+% pgfplots graphics.                          %
+%                                             %
+% author:  Enys Mones                         %
+% date:    2016-12-07                         %
+% version: 0.1                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Imports
+\usepackage{pgfplots}
+
+
+% Settings
+\def\boxSize{0.55em}
+\pgfplotsset{
+  % box plot
+  box plot/.style={
+      /pgfplots/.cd,
+      only marks,
+      mark=-,
+      mark size=\boxSize,
+      /pgfplots/error bars/.cd,
+      y dir=plus,
+      y explicit,
+  },
+  box plot box/.style={
+      /pgfplots/error bars/draw error bar/.code 2 args={%
+          \draw[thick,fill opacity=0.2,fill]  ##1 -- ++(\boxSize,0pt) |- ##2 -- ++(-\boxSize,0pt) |- ##1 -- cycle;
+      },
+      /pgfplots/box plot
+  },
+  box plot bottom whisker/.style={
+      thick,
+      /pgfplots/error bars/draw error bar/.code 2 args={%
+          \pgfkeysgetvalue{/pgfplots/error bars/error mark}%
+          {\pgfplotserrorbarsmark}%
+          \pgfkeysgetvalue{/pgfplots/error bars/error mark options}%
+          {\pgfplotserrorbarsmarkopts}%
+          \path[thick] ##1 -- ##2;
+      },
+      /pgfplots/box plot
+  },
+  box plot bottom whisker trunc/.style={
+      thick,dashed,
+      /pgfplots/error bars/draw error bar/.code 2 args={%
+          \pgfkeysgetvalue{/pgfplots/error bars/error mark}%
+          {\pgfplotserrorbarsmark}%
+          \pgfkeysgetvalue{/pgfplots/error bars/error mark options}%
+          {\pgfplotserrorbarsmarkopts}%
+          \path[thick] ##1 -- ##2;
+      },
+      /pgfplots/box plot
+  },
+  box plot top whisker/.style={
+      thick,
+      /pgfplots/error bars/draw error bar/.code 2 args={%
+          \pgfkeysgetvalue{/pgfplots/error bars/error mark}%
+          {\pgfplotserrorbarsmark}%
+          \pgfkeysgetvalue{/pgfplots/error bars/error mark options}%
+          {\pgfplotserrorbarsmarkopts}%
+          \path[thick] ##1 -- ##2;
+      },
+      /pgfplots/box plot
+  },
+  box plot top whisker trunc/.style={
+      thick,dashed,
+      /pgfplots/error bars/draw error bar/.code 2 args={%
+          \pgfkeysgetvalue{/pgfplots/error bars/error mark}%
+          {\pgfplotserrorbarsmark}%
+          \pgfkeysgetvalue{/pgfplots/error bars/error mark options}%
+          {\pgfplotserrorbarsmarkopts}%
+          \path[thick] ##1 -- ##2;
+      },
+      /pgfplots/box plot
+  },
+  box plot median/.style={
+      ultra thick,
+      /pgfplots/box plot
+  }
+}
+
+\newcommand{\BoxPlot}[8][]{% 1-style 2-data 3-x 4-center 5-body_bottom 6-body_top 7-bottom_whisker 8-top_whisker
+  % median
+  \addplot [#1,box plot median] table[x index=#3,y index=#4]{#2};
+  % body (lower and upper quartiles)
+  \addplot [#1,forget plot,box plot box] table[x index=#3,y index=#5,y error expr={\thisrowno{#6}-\thisrowno{#5}}]{#2};
+  % bottom and top whiskers
+  \addplot [#1,forget plot,box plot bottom whisker] table[x index=#3,y index=#7,y error expr={\thisrowno{#5}-\thisrowno{#7}}]{#2};  
+  \addplot [#1,forget plot,box plot top whisker] table[x index=#3,y index=#8,y error expr={\thisrowno{#6}-\thisrowno{#8}}]{#2};
+}
+
+\newcommand{\BoxPlotXScaled}[9][]{% 1-style 2-data 3-center 4-body_bottom 5-body_top 6-bottom_whisker 7-top_whisker 8-x_scale 9-x_shift
+  % median
+  \addplot [#1,box plot median] table[x expr=#8*\thisrowno{0}+#9,y index=#3]{#2};
+  % body (lower and upper quartiles)
+  \addplot [#1,forget plot,box plot box] table[x expr=#8*\thisrowno{0}+#9,y index=#4,y error expr={\thisrowno{#5}-\thisrowno{#4}}]{#2};
+  % bottom and top whiskers
+  \addplot [#1,forget plot,box plot bottom whisker] table[x expr=#8*\thisrowno{0}+#9,y index=#6,y error expr={\thisrowno{#4}-\thisrowno{#6}}]{#2};  
+  \addplot [#1,forget plot,box plot top whisker] table[x expr=#8*\thisrowno{0}+#9,y index=#7,y error expr={\thisrowno{#5}-\thisrowno{#7}}]{#2};
+}
+
+\newcommand{\BoxPlotBottomTrunc}[8]{
+  % median
+  \addplot [#8,box plot median] table[x expr=#2,y index=#3]{#1};
+  % body (lower and upper quartiles)
+  \addplot [#8,forget plot,box plot box] table[x expr=#2,y index=#4,y error expr={\thisrowno{#5}-\thisrowno{#4}}]{#1};
+  % bottom and top whiskers
+  \addplot [#8,forget plot,box plot bottom whisker trunc] table[x expr=#2,y index=#6,y error expr={\thisrowno{#4}-\thisrowno{#6}}]{#1};  
+  \addplot [#8,forget plot,box plot top whisker] table[x expr=#2,y index=#7,y error expr={\thisrowno{#5}-\thisrowno{#7}}]{#1};
+}
+
+\newcommand{\BoxPlotTopTrunc}[8]{
+  % median
+  \addplot [#8,box plot median] table[x expr=#2,y index=#3]{#1};
+  % body (lower and upper quartiles)
+  \addplot [#8,forget plot,box plot box] table[x expr=#2,y index=#4,y error expr={\thisrowno{#5}-\thisrowno{#4}}]{#1};
+  % bottom and top whiskers
+  \addplot [#8,forget plot,box plot bottom whisker] table[x expr=#2,y index=#6,y error expr={\thisrowno{#4}-\thisrowno{#6}}]{#1};  
+  \addplot [#8,forget plot,box plot top whisker trunc] table[x expr=#2,y index=#7,y error expr={\thisrowno{#5}-\thisrowno{#7}}]{#1};
+}
+
+\newcommand{\BoxPlotScaled}[9]{
+  % median
+  \addplot [#8,box plot median] table[x expr=#2,y expr=\thisrowno{#3}/#9]{#1};
+  % body (lower and upper quartiles)
+  \addplot [#8,forget plot,box plot box] table[x expr=#2,y expr=\thisrowno{#4}/#9,y error expr={(\thisrowno{#5}-\thisrowno{#4})/#9}]{#1};
+  % bottom and top whiskers
+  \addplot [#8,forget plot,box plot bottom whisker] table[x expr=#2,y expr=\thisrowno{#6}/#9,y error expr={(\thisrowno{#4}-\thisrowno{#6})/#9}]{#1};  
+  \addplot [#8,forget plot,box plot top whisker] table[x expr=#2,y expr=\thisrowno{#7}/#9,y error expr={(\thisrowno{#5}-\thisrowno{#7})/#9}]{#1};
+}

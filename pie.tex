@@ -1,0 +1,60 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Implements a pie chart for pgfplots         %
+% graphics                                    %
+%                                             %
+% author:  Enys Mones                         %
+% date:    2016-12-07                         %
+% version: 0.1                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Imports
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+
+% Core of pie chart
+\tikzstyle{pie chart}=[
+    slice/.style={line cap=round, line join=round, very thick,draw=white},
+    slice type/.style 2 args={
+        ##1/.style={fill=##2},
+        values of ##1/.style={}
+    }
+]
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+
+% Draws a pie chart
+%
+% arg 1: additional style for the pie chart
+% arg 2: slice sizes and style
+\newcommand{\pie}[2][]{
+    \begin{scope}[pie chart,#1]
+    \pgfmathsetmacro{\curA}{90}
+    \pgfmathsetmacro{\r}{1}
+    \def\c{(0,0)}
+    \edef\sum{0}
+    \foreach \v/\s in{#2}{
+      \pgfmathparse{\sum+\v}
+      \xdef\sum{\pgfmathresult}
+    }
+    \foreach \v/\s in{#2}{
+        \pgfmathsetmacro{\deltaA}{\v/\sum*360}
+        \pgfmathsetmacro{\nextA}{\curA + \deltaA}
+        \pgfmathsetmacro{\midA}{(\curA+\nextA)/2}
+
+        \path[slice,\s] \c
+            -- +(\curA:\r)
+            arc (\curA:\nextA:\r)
+            -- cycle;
+        \pgfmathsetmacro{\d}{max((\deltaA * -(.5/50) + 1) , .5)}
+
+        %\begin{pgfonlayer}{foreground}
+        %\path \c -- node[pos=\d,pie values,values of \s]{$\v\%$} +(\midA:\r);
+        %\end{pgfonlayer}
+
+        \global\let\curA\nextA
+    }
+    \end{scope}
+}
